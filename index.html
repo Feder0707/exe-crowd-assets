@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EXE CROWD preview</title>
+<style>body{margin:0;background:#03060e;color:#f3ead8;font:14px system-ui}.w{max-width:1280px;margin:0 auto;padding:12px 16px}
+.stage{position:relative;border-radius:10px;overflow:hidden;background:#060b18}.stage.corner{background:repeating-conic-gradient(#cfd3d8 0 25%,#e6e9ec 0 50%) 0 0/48px 48px}
+canvas{width:100%;height:auto;display:block}.bar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}button{font:600 13px system-ui;padding:8px 12px;border-radius:999px;border:1px solid rgba(230,194,124,.6);background:#121a30;color:#f3ead8;cursor:pointer}
+pre{background:#0d1426;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap}</style></head><body><div class="w">
+<div class="stage" id="st"><canvas id="c"></canvas></div>
+<div class="bar">
+<button onclick="cw.chat(nm(),'hi')">chat (join)</button><button onclick="cw.chat(nm(),'!cheer')">!cheer</button>
+<button onclick="cw.event({type:'follower',name:nm()})">follow</button><button onclick="cw.event({type:'subscriber',name:pick()})">sub</button>
+<button onclick="cw.event({type:'gift',name:pick(),count:3})">gift ×3</button><button onclick="cw.event({type:'cheer',name:pick(),amount:100})">100 bits</button>
+<button onclick="cw.event({type:'cheer',name:pick(),amount:50})">50 bits</button><button onclick="cw.event({type:'tip',name:pick(),amount:5,label:'€5'})">€5 tip</button>
+<button onclick="cw.event({type:'raid',name:'bigstreamer',count:8})">raid ×8</button><button onclick="for(let i=0;i<12;i++)setTimeout(()=>cw.chat(nm(),'hi'),i*300)">+12 chat</button>
+<button onclick="tog('christmas')">Christmas</button><button onclick="cw.setConfig({layout:cw.config().layout==='full'?'corner':'full'});document.getElementById('st').classList.toggle('corner')">Layout</button>
+<button onclick="tog('rounds')">Rounds</button><button onclick="cw.reset()">Reset</button></div>
+<pre id="d"></pre></div>
+<script src="engine/crowd.js"></script><script>
+const store={get:k=>localStorage.getItem(k),set:(k,v)=>localStorage.setItem(k,v)};
+const cw=Crowd.create({canvas:document.getElementById('c'),base:'./',storage:store,config:{idleMinutes:.1,sleepAfter:20}});
+let n=0;const nm=()=>'viewer_'+(++n);const pick=()=>{const m=cw._demo.members();return m.length?m[Math.floor(Math.random()*m.length)]:nm()};
+function tog(k){const c=cw.config();cw.setConfig({[k]:!c[k]})}
+setInterval(()=>{document.getElementById('d').textContent=JSON.stringify(cw.debug())},500);
+</script></body></html>
